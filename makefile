@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
-TARGET = a3
+TARGET = a3_mshaya01
 SRCS = main.c sorting.c searching.c
 OBJS = $(SRCS:.c=.o)
 

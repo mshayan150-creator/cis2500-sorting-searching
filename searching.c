@@ -4,7 +4,19 @@
    PART 3 — Searching Algorithms
    ───────────────────────────────────────────── */
 
-/* 1. Linear Search — returns index of first match, or -1 */
+/*
+ * Purpose:   Searches for a target value in an unsorted array using
+ *            linear search, returning the index of the first match.
+ * Parameters:
+ *   arr    - array of floats to search
+ *   size   - number of elements in the array
+ *   target - float value to search for
+ * Example:   float arr[] = {3.1, 1.2, 2.5};
+ *            linearSearch(arr, 3, 1.2); // returns 1
+ *            linearSearch(arr, 3, 9.9); // returns -1
+ * Effect:    No modifications to the array.
+ * Return:    Index of first occurrence of target, or -1 if not found
+ */
 int linearSearch(float arr[], int size, float target) {
     for (int i = 0; i < size; i++) {
         if (arr[i] == target)
@@ -13,7 +25,20 @@ int linearSearch(float arr[], int size, float target) {
     return -1;
 }
 
-/* 2. Linear Search All — stores all matching indices, returns count */
+/*
+ * Purpose:   Searches for all occurrences of a target value in an array
+ *            using linear search, storing every matching index.
+ * Parameters:
+ *   arr     - array of floats to search
+ *   size    - number of elements in the array
+ *   target  - float value to search for
+ *   indices - array to store the indices of all matches
+ * Example:   float arr[] = {1.2, 3.1, 1.2, 2.5};
+ *            int idx[4];
+ *            linearSearchAll(arr, 4, 1.2, idx); // returns 2, idx={0,2}
+ * Effect:    Populates indices[] with all positions where target appears.
+ * Return:    Number of times target was found in the array
+ */
 int linearSearchAll(float arr[], int size, float target, int indices[]) {
     int count = 0;
     for (int i = 0; i < size; i++) {
@@ -23,7 +48,19 @@ int linearSearchAll(float arr[], int size, float target, int indices[]) {
     return count;
 }
 
-/* 3. Binary Search — array must be sorted; returns index or -1 */
+/*
+ * Purpose:   Searches for a target value in a sorted array using binary
+ *            search, returning the index of a matching element.
+ * Parameters:
+ *   arr    - sorted array of floats to search
+ *   size   - number of elements in the array
+ *   target - float value to search for
+ * Example:   float arr[] = {1.2, 2.5, 3.1};
+ *            binarySearch(arr, 3, 2.5); // returns 1
+ *            binarySearch(arr, 3, 9.9); // returns -1
+ * Effect:    No modifications to the array.
+ * Return:    Index of target if found, or -1 if not found
+ */
 int binarySearch(float arr[], int size, float target) {
     int left = 0, right = size - 1;
     while (left <= right) {
@@ -38,8 +75,22 @@ int binarySearch(float arr[], int size, float target) {
     return -1;
 }
 
-/* 4. Binary Search First — returns index of FIRST occurrence of a
-      duplicate value, or -1 if the value is not a duplicate (or not found) */
+/*
+ * Purpose:   Searches a sorted array for the first occurrence of a
+ *            duplicate value. Returns -1 if the value is not found or
+ *            if it is not a duplicate.
+ * Parameters:
+ *   arr    - sorted array of floats to search
+ *   size   - number of elements in the array
+ *   target - float value to search for
+ * Example:   float arr[] = {1.2, 2.5, 3.4, 3.4, 3.4, 6.8};
+ *            binarySearchFirst(arr, 6, 3.4); // returns 2
+ *            binarySearchFirst(arr, 6, 2.5); // returns -1 (not duplicate)
+ *            binarySearchFirst(arr, 6, 9.9); // returns -1 (not found)
+ * Effect:    No modifications to the array.
+ * Return:    Index of the first occurrence of target if it is a duplicate,
+ *            or -1 otherwise
+ */
 int binarySearchFirst(float arr[], int size, float target) {
     int left = 0, right = size - 1;
     int result = -1;
@@ -48,7 +99,7 @@ int binarySearchFirst(float arr[], int size, float target) {
         int mid = left + (right - left) / 2;
         if (arr[mid] == target) {
             result = mid;
-            right = mid - 1;   /* keep searching left for earlier occurrence */
+            right = mid - 1;
         } else if (arr[mid] < target) {
             left = mid + 1;
         } else {
@@ -56,19 +107,29 @@ int binarySearchFirst(float arr[], int size, float target) {
         }
     }
 
-    /* Per spec: return -1 if value is not a duplicate */
-    if (result == -1)
-        return -1;
+    if (result == -1) return -1;
 
-    /* Check whether there is at least one other occurrence */
     int hasNeighbour = (result + 1 < size && arr[result + 1] == target);
-    if (!hasNeighbour)
-        return -1;
+    if (!hasNeighbour) return -1;
 
     return result;
 }
 
-/* 5. Ternary Search — array must be sorted; returns index or -1 */
+/*
+ * Purpose:   Searches for a target value in a sorted array using ternary
+ *            search, dividing the array into three parts at each step
+ *            using two midpoints.
+ * Parameters:
+ *   arr    - sorted array of floats to search
+ *   left   - starting index of the search range
+ *   right  - ending index of the search range
+ *   target - float value to search for
+ * Example:   float arr[] = {1.2, 2.5, 3.4, 6.8, 8.1};
+ *            ternarySearch(arr, 0, 4, 3.4); // returns 2
+ *            ternarySearch(arr, 0, 4, 9.9); // returns -1
+ * Effect:    No modifications to the array.
+ * Return:    Index of target if found, or -1 if not found
+ */
 int ternarySearch(float arr[], int left, int right, float target) {
     if (left > right)
         return -1;

@@ -1,10 +1,36 @@
+/*
+    Name: [Muhammad Shayan]
+    Student ID: [1384496]
+    Due Date: March 6th, at 11:59pm
+    Course: CIS*2500
+
+    By including this statement in this header comment, 
+    I certify that I have read and understood the University policy on academic integrity.
+
+    I assert that this work is 100% my own. 
+    
+    I have appropriately acknowledged all material 
+    (code, data, images, ideas or words) that I have used, 
+    whether directly quoted or paraphrased.
+    
+    Furthermore, I certify that this assignment was prepared by me specifically for the CIS*2500 Winter 2026 course.
+*/
 #include "a3.h"
 #include <string.h>
 
-#define DATA_FILE "data.csv"
 
-/* ── helpers ─────────────────────────────────── */
-/* ── counting helper: parse CSV to get element count ── */
+
+/* ── counting helper ── */
+
+/*
+ * Purpose:   Counts the total number of comma-separated float values
+ *            across all lines in a CSV file.
+ * Parameters:
+ *   filename - path to the CSV file
+ * Example:   countElements("data.csv"); // returns 1000
+ * Effect:    Opens and reads the file; exits if file cannot be opened.
+ * Return:    Total number of float values in the file
+ */
 static int countElements(const char *filename) {
     FILE *fp = fopen(filename, "r");
     if (!fp) { fprintf(stderr, "Cannot open %s\n", filename); exit(1); }
@@ -21,6 +47,20 @@ static int countElements(const char *filename) {
 /* ══════════════════════════════════════════════
    PART 1 — Benchmarking
    ══════════════════════════════════════════════ */
+
+/*
+ * Purpose:   Benchmarks all six sorting algorithms (bubble, selection,
+ *            insertion, merge, quick, hybrid merge) using clock() and
+ *            prints the elapsed time for each in seconds.
+ * Parameters:
+ *   base - original unsorted array loaded from the CSV
+ *   n    - number of elements in the array
+ * Example:   benchmarkSorts(base, 1000);
+ *            // prints execution time for each sort algorithm
+ * Effect:    Copies base into a temporary array before each sort so the
+ *            original data is preserved. Prints results to stdout.
+ * Return:    void
+ */
 static void benchmarkSorts(float base[], int n) {
     float arr[MAX_ARRAY_SIZE];
     clock_t start, end;
@@ -28,7 +68,6 @@ static void benchmarkSorts(float base[], int n) {
 
     printf("=== PART 1: Benchmark Results ===\n\n");
 
-    /* Bubble Sort */
     memcpy(arr, base, n * sizeof(float));
     start = clock();
     bubbleSort(arr, n);
@@ -36,7 +75,6 @@ static void benchmarkSorts(float base[], int n) {
     elapsed = (double)(end - start) / CLOCKS_PER_SEC;
     printf("Bubble Sort:       %.6f seconds\n", elapsed);
 
-    /* Selection Sort */
     memcpy(arr, base, n * sizeof(float));
     start = clock();
     selectionSort(arr, n);
@@ -44,7 +82,6 @@ static void benchmarkSorts(float base[], int n) {
     elapsed = (double)(end - start) / CLOCKS_PER_SEC;
     printf("Selection Sort:    %.6f seconds\n", elapsed);
 
-    /* Insertion Sort */
     memcpy(arr, base, n * sizeof(float));
     start = clock();
     insertionSort(arr, n);
@@ -52,7 +89,6 @@ static void benchmarkSorts(float base[], int n) {
     elapsed = (double)(end - start) / CLOCKS_PER_SEC;
     printf("Insertion Sort:    %.6f seconds\n", elapsed);
 
-    /* Merge Sort */
     memcpy(arr, base, n * sizeof(float));
     start = clock();
     mergeSort(arr, n);
@@ -60,7 +96,6 @@ static void benchmarkSorts(float base[], int n) {
     elapsed = (double)(end - start) / CLOCKS_PER_SEC;
     printf("Merge Sort:        %.6f seconds\n", elapsed);
 
-    /* Quick Sort */
     memcpy(arr, base, n * sizeof(float));
     start = clock();
     quickSort(arr, n);
@@ -68,7 +103,6 @@ static void benchmarkSorts(float base[], int n) {
     elapsed = (double)(end - start) / CLOCKS_PER_SEC;
     printf("Quick Sort:        %.6f seconds\n", elapsed);
 
-    /* Hybrid Merge Sort */
     memcpy(arr, base, n * sizeof(float));
     start = clock();
     hybridMergeSort(arr, 0, n - 1);
@@ -82,11 +116,24 @@ static void benchmarkSorts(float base[], int n) {
 /* ══════════════════════════════════════════════
    PART 2 — Sorting Variants Demo
    ══════════════════════════════════════════════ */
+
+/*
+ * Purpose:   Demonstrates all six sorting variant functions by running
+ *            each on a copy of the base array and printing before/after
+ *            results to verify correct behaviour.
+ * Parameters:
+ *   base - original unsorted array loaded from the CSV
+ *   n    - number of elements in the array
+ * Example:   demoPart2(base, 1000);
+ *            // prints before/after output for each sorting variant
+ * Effect:    Copies base into a temporary array before each demo.
+ *            Prints results to stdout. Does not modify base.
+ * Return:    void
+ */
 static void demoPart2(float base[], int n) {
     float arr[MAX_ARRAY_SIZE];
     printf("=== PART 2: Sorting Variants Demo ===\n\n");
 
-    /* 1. selectionSortRange — sort indices 2..6 */
     memcpy(arr, base, n * sizeof(float));
     printf("selectionSortRange (indices 2 to 6):\n");
     printf("  Before: ");
@@ -97,7 +144,6 @@ static void demoPart2(float base[], int n) {
     for (int i = 0; i < 10; i++) printf("%.2f ", arr[i]);
     printf("\n\n");
 
-    /* 2. insertionSortFrom — sort from index 5 onward */
     memcpy(arr, base, n * sizeof(float));
     printf("insertionSortFrom (startIndex = 5):\n");
     printf("  Before: ");
@@ -108,31 +154,30 @@ static void demoPart2(float base[], int n) {
     for (int i = 0; i < 10; i++) printf("%.2f ", arr[i]);
     printf("\n\n");
 
-    /* 3. bubbleSortFrontAndRear — sort first 5 and last 5 */
     memcpy(arr, base, n * sizeof(float));
     printf("bubbleSortFrontAndRear (front=5, rear=5):\n");
-    printf("  Before: ");
-    for (int i = 0; i < 10; i++) printf("%.2f ", arr[i]);
-    printf("...\n");
+    printf("  Before front: ");
+    for (int i = 0; i < 5; i++) printf("%.2f ", arr[i]);
+    printf("  Before rear: ");
+    for (int i = n - 5; i < n; i++) printf("%.2f ", arr[i]);
+    printf("\n");
     bubbleSortFrontAndRear(arr, 5, 5, n);
-    printf("  After front: ");
+    printf("  After front:  ");
     for (int i = 0; i < 5; i++) printf("%.2f ", arr[i]);
     printf("  After rear:  ");
     for (int i = n - 5; i < n; i++) printf("%.2f ", arr[i]);
     printf("\n\n");
 
-    /* 4. mergeSortFirstHalf */
     memcpy(arr, base, n * sizeof(float));
     printf("mergeSortFirstHalf:\n");
     printf("  First half before: ");
-    for (int i = 0; i < n / 2 && i < 8; i++) printf("%.2f ", arr[i]);
+    for (int i = 0; i < 8; i++) printf("%.2f ", arr[i]);
     printf("\n");
     mergeSortFirstHalf(arr, n);
     printf("  First half after:  ");
-    for (int i = 0; i < n / 2 && i < 8; i++) printf("%.2f ", arr[i]);
+    for (int i = 0; i < 8; i++) printf("%.2f ", arr[i]);
     printf("\n\n");
 
-    /* 5. hybridMergeSort */
     memcpy(arr, base, n * sizeof(float));
     printf("hybridMergeSort (THRESHOLD=%d):\n", THRESHOLD);
     hybridMergeSort(arr, 0, n - 1);
@@ -140,7 +185,6 @@ static void demoPart2(float base[], int n) {
     for (int i = 0; i < 10; i++) printf("%.2f ", arr[i]);
     printf("\n\n");
 
-    /* 6. quickSortPivot (middle pivot) */
     memcpy(arr, base, n * sizeof(float));
     printf("quickSortPivot (middle element pivot):\n");
     quickSortPivot(arr, 0, n - 1);
@@ -152,46 +196,50 @@ static void demoPart2(float base[], int n) {
 /* ══════════════════════════════════════════════
    PART 3 — Searching Demo
    ══════════════════════════════════════════════ */
+
+/*
+ * Purpose:   Demonstrates all five searching functions by running each
+ *            on the base array (sorted where required) and printing
+ *            results to verify correct behaviour.
+ * Parameters:
+ *   base - original unsorted array loaded from the CSV
+ *   n    - number of elements in the array
+ * Example:   demoPart3(base, 1000);
+ *            // prints search results for each algorithm
+ * Effect:    Creates sorted copies of base as needed for binary/ternary
+ *            search. Injects duplicates to test binarySearchFirst.
+ *            Prints results to stdout. Does not modify base.
+ * Return:    void
+ */
 static void demoPart3(float base[], int n) {
     float arr[MAX_ARRAY_SIZE];
     printf("=== PART 3: Searching Demo ===\n\n");
 
-    /* ── Linear Search ── */
-    float target = base[5];   /* pick a known value */
+    float target = base[5];
     int idx = linearSearch(base, n, target);
     printf("linearSearch(%.4f): index = %d\n", target, idx);
 
-    /* ── Linear Search All ── */
-    /* Inject a duplicate to demonstrate */
     memcpy(arr, base, n * sizeof(float));
-    arr[10] = arr[5];   /* create duplicate */
+    arr[10] = arr[5];
     int indices[MAX_ARRAY_SIZE];
     int found = linearSearchAll(arr, n, arr[5], indices);
-    printf("linearSearchAll(%.4f): %d match(es) at index/indices:", arr[5], found);
+    printf("linearSearchAll(%.4f): %d match(es) at:", arr[5], found);
     for (int i = 0; i < found; i++) printf(" %d", indices[i]);
     printf("\n");
 
-    /* ── Binary Search (needs sorted array) ── */
     memcpy(arr, base, n * sizeof(float));
     mergeSort(arr, n);
-    float bTarget = arr[n / 3];   /* pick a value known to exist */
+    float bTarget = arr[n / 3];
     idx = binarySearch(arr, n, bTarget);
-    printf("binarySearch(%.4f) on sorted array: index = %d  value = %.4f\n",
-           bTarget, idx, idx >= 0 ? arr[idx] : -1.0f);
+    printf("binarySearch(%.4f): index = %d\n", bTarget, idx);
 
-    /* ── Binary Search First (duplicate) ── */
-    /* Inject duplicates into the sorted array */
     float dupVal = arr[n / 2];
-    arr[n / 2 - 1] = dupVal;   /* place duplicate just before */
-    /* Re-sort to keep it valid */
+    arr[n / 2 - 1] = dupVal;
     mergeSort(arr, n);
-    /* Find where dupVal sits now */
     idx = binarySearchFirst(arr, n, dupVal);
     printf("binarySearchFirst(%.4f): first duplicate index = %d\n", dupVal, idx);
 
-    /* Test a non-duplicate value */
     float nonDup = -99999.0f;
-    /* Find a value that appears exactly once */
     for (int i = 1; i < n - 1; i++) {
         if (arr[i] != arr[i - 1] && arr[i] != arr[i + 1]) {
             nonDup = arr[i];
@@ -199,16 +247,13 @@ static void demoPart3(float base[], int n) {
         }
     }
     idx = binarySearchFirst(arr, n, nonDup);
-    printf("binarySearchFirst(%.4f) [non-duplicate]: index = %d (expect -1)\n",
-           nonDup, idx);
+    printf("binarySearchFirst(%.4f) [non-duplicate]: index = %d (expect -1)\n", nonDup, idx);
 
-    /* ── Ternary Search ── */
     memcpy(arr, base, n * sizeof(float));
     mergeSort(arr, n);
     float tTarget = arr[n / 4];
     idx = ternarySearch(arr, 0, n - 1, tTarget);
-    printf("ternarySearch(%.4f) on sorted array: index = %d  value = %.4f\n",
-           tTarget, idx, idx >= 0 ? arr[idx] : -1.0f);
+    printf("ternarySearch(%.4f): index = %d\n", tTarget, idx);
 
     printf("\n");
 }
@@ -216,13 +261,25 @@ static void demoPart3(float base[], int n) {
 /* ══════════════════════════════════════════════
    main
    ══════════════════════════════════════════════ */
+
+/*
+ * Purpose:   Entry point of the program. Loads the dataset from data.csv,
+ *            then runs benchmarking (Part 1), sorting variant demos (Part 2),
+ *            and searching demos (Part 3).
+ * Parameters:
+ *   void
+ * Example:   Run ./a3_mshaya01 from the command line
+ * Effect:    Loads data from data.csv into memory and prints results for
+ *            all three parts to stdout.
+ * Return:    0 on successful execution
+ */
 int main(void) {
-    int n = countElements(DATA_FILE);
+    int n = countElements("data.csv");
     if (n > MAX_ARRAY_SIZE) n = MAX_ARRAY_SIZE;
-    printf("Loaded %d elements from %s\n\n", n, DATA_FILE);
+    printf("Loaded %d elements from data.csv\n\n", n);
 
     float base[MAX_ARRAY_SIZE];
-    loadArray(DATA_FILE, base, n);
+    loadArray("data.csv", base, n);
 
     benchmarkSorts(base, n);
     demoPart2(base, n);

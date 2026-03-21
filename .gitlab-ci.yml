@@ -1,0 +1,40 @@
+stages:   
+  - trigger
+  - notify
+
+variables:
+  GITLAB_HOST: gitlab.socs.uoguelph.ca
+  GRADER_PROJECT_ID: "56447"
+  GRADER_REF: "main"             
+  ASSIGNMENT: "assn3"
+                      # prepopulation script fills in these two lines before pushing.
+  STUDENT_ID: "mshaya01"   
+  STUDENT_REPO: "mshaya01/assn3" 
+  STUDENT_BRANCH: "main"
+
+trigger_a3_grader:
+  stage: trigger
+  image: curlimages/curl:8.10.1
+  only:
+    refs:
+      - main
+  script:
+    - |
+      set -e
+
+      if [ -z "$A3_TRIGGER_TOKEN" ]; then
+        echo "ERROR: A3_TRIGGER_TOKEN IS EMPTY"
+        exit 1
+      fi
+      
+      curl --fail -X POST \
+        "https://${GITLAB_HOST}/api/v4/projects/${GRADER_PROJECT_ID}/trigger/pipeline" \
+        --data "token=${A3_TRIGGER_TOKEN}" \
+        --data "ref=${GRADER_REF}" \
+        --data-urlencode "variables[STUDENT_ID]=${STUDENT_ID}" \
+        --data-urlencode "variables[STUDENT_REPO]=${STUDENT_REPO}" \
+        --data-urlencode "variables[STUDENT_BRANCH]=${STUDENT_BRANCH}" \
+        --data-urlencode "variables[ASSIGNMENT]=${ASSIGNMENT}" \
+        --data-urlencode "variables[STUDENT_SHA]=${CI_COMMIT_SHA}"
+
+

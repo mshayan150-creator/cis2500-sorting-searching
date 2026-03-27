@@ -2,41 +2,6 @@
 #include <string.h>
 
 /* ─────────────────────────────────────────────
-   Utility: load CSV into array
-   ───────────────────────────────────────────── */
-
-/*
- * Purpose:   Reads comma-separated float values from a CSV file and stores
- *            them in the provided array.
- * Parameters:
- *   filename - path to the CSV file to read from
- *   arr      - array to store the loaded float values
- *   size     - maximum number of elements to load
- * Example:   loadArray("data.csv", arr, 1000);
- *            // arr now contains up to 1000 floats from data.csv
- * Effect:    Populates arr with values read from the file.
- *            Exits the program with an error if the file cannot be opened.
- * Return:    void
- */
-void loadArray(const char *filename, float *arr, int size) {
-    FILE *fp = fopen(filename, "r");
-    if (!fp) {
-        fprintf(stderr, "Error: could not open %s\n", filename);
-        exit(1);
-    }
-    int count = 0;
-    char line[65536];
-    while (fgets(line, sizeof(line), fp) && count < size) {
-        char *token = strtok(line, ",\n\r");
-        while (token != NULL && count < size) {
-            arr[count++] = (float)atof(token);
-            token = strtok(NULL, ",\n\r");
-        }
-    }
-    fclose(fp);
-}
-
-/* ─────────────────────────────────────────────
    PART 1 — Standard Sorting Algorithms
    ───────────────────────────────────────────── */
 

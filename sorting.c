@@ -275,10 +275,10 @@ void selectionSortRange(float arr[], int start, int end, int size) {
  */
 void insertionSortFrom(float arr[], int size, int startIndex) {
     if (startIndex <= 0) startIndex = 1;
-    for (int i = startIndex; i < size; i++) {
+    for (int i = startIndex + 1; i < size; i++) {
         float key = arr[i];
         int j = i - 1;
-        while (j >= startIndex - 1 && arr[j] > key) {
+        while (j >= startIndex && arr[j] > key) {
             arr[j + 1] = arr[j];
             j--;
         }
@@ -302,6 +302,7 @@ void insertionSortFrom(float arr[], int size, int startIndex) {
  * Return:    void
  */
 void bubbleSortFrontAndRear(float arr[], int front, int rear, int size) {
+    /* Sort the front portion ascending */
     for (int i = 0; i < front - 1; i++) {
         int swapped = 0;
         for (int j = 0; j < front - i - 1; j++) {
@@ -312,10 +313,11 @@ void bubbleSortFrontAndRear(float arr[], int front, int rear, int size) {
         }
         if (!swapped) break;
     }
+    /* Sort the rear portion ascending */
     int rearStart = size - rear;
-    for (int i = rearStart; i < size - 1; i++) {
+    for (int i = 0; i < rear - 1; i++) {
         int swapped = 0;
-        for (int j = rearStart; j < rearStart + (size - i - 1) - (rearStart - 1); j++) {
+        for (int j = rearStart; j < size - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
                 float tmp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = tmp;
                 swapped = 1;

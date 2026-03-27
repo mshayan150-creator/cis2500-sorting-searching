@@ -1,3 +1,21 @@
+/*
+    Name: [Muhammad Shayan]
+    Student ID: [1384496]
+    Due Date: March 27th, at 11:59pm
+    Course: CIS*2500
+
+    By including this statement in this header comment, 
+    I certify that I have read and understood the University policy on academic integrity.
+
+    I assert that this work is 100% my own. 
+    
+    I have appropriately acknowledged all material 
+    (code, data, images, ideas or words) that I have used, 
+    whether directly quoted or paraphrased.
+    
+    Furthermore, I certify that this assignment was prepared by me specifically for the CIS*2500 Winter 2026 course.
+*/
+
 #include "a3.h"
 
 void loadArray(const char *filename, float floatArr[], int size) {
